@@ -25,4 +25,17 @@ public class CustomLRUCache<K,V> {
             head=newnode;
         }
     }
+
+    private void removeTail(){
+        map.remove(tail.key);
+        if(head==tail){
+            head.next=null;
+            tail=null;
+            return;
+        }
+        tail=tail.previous;
+        tail.next=null;
+
+
+    }
 }
