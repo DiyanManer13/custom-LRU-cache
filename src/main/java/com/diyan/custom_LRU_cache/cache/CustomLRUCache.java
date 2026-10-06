@@ -64,7 +64,6 @@ public class CustomLRUCache<K,V> {
             return;
         }
         node.previous.next=node.next;
-        node.next.previous=node.previous;
 
         LruNode<K,V>temp = head;
         node.next=temp;
