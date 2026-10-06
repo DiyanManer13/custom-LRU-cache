@@ -18,18 +18,7 @@ public class CustomLRUCache<K,V> {
         LruNode<K,V> node = map.get(key);
         if(node!=null){
             node.value=value;
-            if(node!=head){
-                node.previous.next=node.next;          // removing node from the position
-                node.next.previous=node.previous;
-
-                LruNode<K,V> temp=head;
-
-                node.next=temp;
-                temp.previous=node;     // putting node as head
-
-                node.previous=null;
-                head=node;
-            }
+            moveToHead(node);
             return;
         }
         else{
@@ -58,10 +47,6 @@ public class CustomLRUCache<K,V> {
         }
         tail=tail.previous;
         tail.next=null;
-    }
-
-    public V get(K key){
-        LruNode<K,V> node = map.get(key);
     }
 
     private void moveToHead(LruNode<K,V> node){
