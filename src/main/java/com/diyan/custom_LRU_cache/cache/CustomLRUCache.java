@@ -11,4 +11,13 @@ public class CustomLRUCache<K,V> {
     public CustomLRUCache(int capacity){
         this.capacity=capacity;
     }
+
+    public void put (K key,V value){
+        LruNode<K,V> newnode = new LruNode<>(key,value);
+
+        map.put(key,newnode);
+        if(head==null){
+            head=tail=newnode;
+        }
+    }
 }
