@@ -6,4 +6,8 @@ public class LruNode<K,V> {
     LruNode<K,V> previous;
     LruNode<K,V> next;
 
+    LruNode(K key,V value){
+        this.key=key;
+        this.value=value;
+    }
 }
