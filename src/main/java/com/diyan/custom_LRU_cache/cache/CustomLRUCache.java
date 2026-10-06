@@ -17,28 +17,34 @@ public class CustomLRUCache<K,V> {
 
         LruNode<K,V> node = map.get(key);
         if(node!=null){
+            node.value=value;
+            if(node!=head){
+                node.previous.next=node.next;          // removing node from the position
+                node.next.previous=node.previous;
 
-            node.previous.next=node.next;          // removing node from the position
-            node.next.previous=node.previous;
+                LruNode<K,V> temp=head;
 
-            LruNode<K,V> temp=head;
+                node.next=temp;
+                temp.previous=node;     // putting node as head
 
-            node.next=temp;
-            temp.previous=node;     // putting node as head
-
-            node.previous=null;
-            head=node;
-
-        }else{
-            LruNode<K,V> newnode = new LruNode<>(key,value);
+                node.previous=null;
+                head=node;
+            }
+            return;
+        }
+        else{
+            LruNode<K,V> newnode = new LruNode<>(key,value);      //create node
             map.put(key,newnode);
             if(head==null){
                 head=tail=newnode;
             }else{
                 newnode.next=head;
-                head.previous=newnode;
+                head.previous=newnode;                  //put it as head
                 newnode.previous=null;
                 head=newnode;
+            }
+            if(map.size()>capacity){
+                removeTail();                  // to remove LRU process if cache buffer is full
             }
         }
     }
@@ -46,13 +52,13 @@ public class CustomLRUCache<K,V> {
     private void removeTail(){
         map.remove(tail.key);
         if(head==tail){
-            head.next=null;
+            head=null;
             tail=null;
             return;
         }
         tail=tail.previous;
         tail.next=null;
-
-
     }
+
+
 }
