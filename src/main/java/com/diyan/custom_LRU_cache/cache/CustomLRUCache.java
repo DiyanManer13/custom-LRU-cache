@@ -13,16 +13,33 @@ public class CustomLRUCache<K,V> {
     }
 
     public void put (K key,V value){
-        LruNode<K,V> newnode = new LruNode<>(key,value);
 
-        map.put(key,newnode);
-        if(head==null){
-            head=tail=newnode;
+
+        LruNode<K,V> node = map.get(key);
+        if(node!=null){
+
+            node.previous.next=node.next;          // removing node from the position
+            node.next.previous=node.previous;
+
+            LruNode<K,V> temp=head;
+
+            node.next=temp;
+            temp.previous=node;     // putting node as head
+
+            node.previous=null;
+            head=node;
+
         }else{
-            newnode.next=head;
-            head.previous=newnode;
-            newnode.previous=null;
-            head=newnode;
+            LruNode<K,V> newnode = new LruNode<>(key,value);
+            map.put(key,newnode);
+            if(head==null){
+                head=tail=newnode;
+            }else{
+                newnode.next=head;
+                head.previous=newnode;
+                newnode.previous=null;
+                head=newnode;
+            }
         }
     }
 
