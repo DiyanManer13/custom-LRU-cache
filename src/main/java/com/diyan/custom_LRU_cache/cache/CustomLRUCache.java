@@ -49,6 +49,16 @@ public class CustomLRUCache<K,V> {
         tail.next=null;
     }
 
+    public V get(K key){
+        LruNode<K,V> node = map.get(key);
+        if(node ==null){
+            return null;
+        }
+        moveToHead(node);
+
+        return node.value;
+    }
+
     private void moveToHead(LruNode<K,V> node){
         if(node==head){
             return;
